@@ -1,20 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Routes from './assets/Routes';
+// Telas
+import { ProductList } from './screens/ProductList';
 
 export default function App() {
+
+  const Stack = createStackNavigator();
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName={Routes.products}>
+          <Stack.Screen name={Routes.products} component={ProductList} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
   },
 });
