@@ -1,14 +1,20 @@
-import { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, StyleSheet, Pressable, Picker } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export function SearchBar ({getSearchTerm, clearTerm}){
+export function SearchBar ({getSearchTerm, clearTerm, getPickerFilter}){
 
     const [searchTerm, setSearchTerm] = useState('');
-
+    const [selectFilter, setSelectFilter] = useState('Sem Filtro');
     function setTerm (term){
         getSearchTerm(term);
+        setPickerFilter(selectFilter);
     }
+
+    function setPickerFilter (term){
+        getPickerFilter(term);
+    }
+
     function clearTermFunc (){
         clearTerm();
         setSearchTerm('');
@@ -18,12 +24,20 @@ export function SearchBar ({getSearchTerm, clearTerm}){
         <View style={styles.container}>
             <TextInput style={styles.input} placeholder='filtro' value={searchTerm} onChangeText={setSearchTerm} />
             {searchTerm.length > 0 ? 
-            <Pressable onPress={()=>{clearTermFunc()}}>
-                <Icon name='eraser' size={30} color={'black'} />
-            </Pressable>
-            :
-            null
-        }
+                <Pressable onPress={()=>{clearTermFunc()}}>
+                    <Icon name='eraser' size={30} color={'black'} />
+                </Pressable>
+                :
+                null
+            }
+            <Picker
+                selectedValue={selectFilter}
+                onValueChange={(value) => setSelectFilter(value)}
+            >
+                <Picker.Item label="Sem Filtro" value="Sem Filtro" />
+                <Picker.Item label="Ordem Crescente" value="Ordem Crescente" />
+                <Picker.Item label="Ordem Decrescente" value="Ordem Decrescente" />
+            </Picker>
             <Pressable onPress={()=>{setTerm(searchTerm)}}>
                 <Icon name='search' size={30} color={'black'} />
             </Pressable>

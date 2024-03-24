@@ -9,6 +9,7 @@ export function ProductList ({navigation}){
 
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [pickerFilter, setpickerFilter] = useState('');
 
     useEffect(()=>{
         loadProducts();
@@ -41,15 +42,29 @@ export function ProductList ({navigation}){
     function clearSearchTerm() {
         setSearchTerm('');
     }
+    function getPickerFilter(term) {
+        setpickerFilter(term);
+    }
 
     function filter() {
         let updateList = [...products];
+        // Pesquisa por nome ou descrição
         updateList = updateList.filter((product) => {
-          return (
-            product.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            product.preco.toString().toLowerCase().includes(searchTerm.toLowerCase())
-          );
+            return (
+              product.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              product.preco.toString().toLowerCase().includes(searchTerm.toLowerCase())
+            );
         });
+        // Ordem por crescente
+        if (pickerFilter === "Ordem Crescente"){
+            let ordem = [...updateList].sort((a, b) => a.nome.localeCompare(b.nome));
+            updateList = ordem;
+        }
+        // Ordem por decrescente
+        else if (pickerFilter === "Ordem Decrescente"){
+            let ordem = [...updateList].sort((a, b) => b.nome.localeCompare(a.nome));
+            updateList = ordem;
+        }
         return (
             <FlatList
                 data={updateList}
@@ -62,7 +77,7 @@ export function ProductList ({navigation}){
     }
 
     let showBooks =
-        products.length > 0 && searchTerm.length === 0 ? (
+        products.length > 0 && searchTerm.length === 0 && pickerFilter === "Sem Filtro" ? (
             <FlatList
                 data={products}
                 keyExtractor={(item, index) => index.toString()}
@@ -76,7 +91,7 @@ export function ProductList ({navigation}){
 
     return (
         <View style={styles.container}>
-            <SearchBar getSearchTerm={getSearchTerm} clearTerm={clearSearchTerm} />
+            <SearchBar getSearchTerm={getSearchTerm} getPickerFilter={getPickerFilter} clearTerm={clearSearchTerm} />
             <View style={{height: 900}}>
                 {showBooks}
             </View>

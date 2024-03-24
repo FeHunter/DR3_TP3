@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 
-export function ComentarioCard ({route}){
-    const { comentario } = route.params;
+export function ComentarioCard ({comentario}){
     console.log(comentario);
     return (
         <View style={styles.container}>
