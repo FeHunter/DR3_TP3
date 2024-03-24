@@ -52,18 +52,18 @@ export function ProductList ({navigation}){
         updateList = updateList.filter((product) => {
             return (
               product.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              product.preco.toString().toLowerCase().includes(searchTerm.toLowerCase())
+              product.descricao.toString().toLowerCase().includes(searchTerm.toLowerCase())
             );
         });
-        // Ordem por crescente
-        if (pickerFilter === "Ordem Crescente"){
-            let ordem = [...updateList].sort((a, b) => a.nome.localeCompare(b.nome));
-            updateList = ordem;
-        }
-        // Ordem por decrescente
-        else if (pickerFilter === "Ordem Decrescente"){
-            let ordem = [...updateList].sort((a, b) => b.nome.localeCompare(a.nome));
-            updateList = ordem;
+        // Ordem conforme o picker selection
+        if (pickerFilter === "Ordem Crescente") {
+            updateList.sort((a, b) => a.nome.localeCompare(b.nome));
+        } else if (pickerFilter === "Ordem Decrescente") {
+            updateList.sort((a, b) => b.nome.localeCompare(a.nome));
+        } else if (pickerFilter === "Maior Preço") {
+            updateList.sort((a, b) => b.preco - a.preco);
+        } else if (pickerFilter === "Menor Preço") {
+            updateList.sort((a, b) => a.preco - b.preco);
         }
         return (
             <FlatList

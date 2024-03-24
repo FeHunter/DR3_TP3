@@ -35,8 +35,10 @@ export function SearchBar ({getSearchTerm, clearTerm, getPickerFilter}){
                 onValueChange={(value) => setSelectFilter(value)}
             >
                 <Picker.Item label="Sem Filtro" value="Sem Filtro" />
-                <Picker.Item label="Ordem Crescente" value="Ordem Crescente" />
-                <Picker.Item label="Ordem Decrescente" value="Ordem Decrescente" />
+                <Picker.Item label="A - Z" value="Ordem Crescente" />
+                <Picker.Item label="Z - A" value="Ordem Decrescente" />
+                <Picker.Item label="Maior Preço" value="Maior Preço" />
+                <Picker.Item label="Menor Preço" value="Menor Preço" />
             </Picker>
             <Pressable onPress={()=>{setTerm(searchTerm)}}>
                 <Icon name='search' size={30} color={'black'} />
