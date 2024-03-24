@@ -1,4 +1,4 @@
-import { View, ScrollView, Text, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, ActivityIndicator , StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import { ProductCard } from "../components/Product/ProductCard";
 import { SearchBar } from "../components/Search/SearchBar";
@@ -11,21 +11,21 @@ export function ProductList ({navigation}){
     const [searchTerm, setSearchTerm] = useState('');
     const [pickerFilter, setpickerFilter] = useState('');
 
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(()=>{
         loadProducts();
-        loadProductsLog();
     },[])
 
     async function loadProducts (){
+        setIsLoading(true);
         await fetch(url)
         .then(res => res.json())
-        .then(res => setProducts(convertData(res)))
-        .catch(error => { console.log(error.message) });
-    }
-    async function loadProductsLog (){
-        await fetch(url)
-        .then(res => res.json())
-        .then(res => console.log(convertData(res)))
+        .then(res => {
+            setProducts(convertData(res));
+        })
+        .catch(error => { console.log(error.message)})
+        .finally(setIsLoading(false));
     }
 
     function convertData (data){
@@ -76,7 +76,7 @@ export function ProductList ({navigation}){
         );
     }
 
-    let showBooks =
+    let showList =
         products.length > 0 && searchTerm.length === 0 && pickerFilter === "Sem Filtro" ? (
             <FlatList
                 data={products}
@@ -93,7 +93,7 @@ export function ProductList ({navigation}){
         <View style={styles.container}>
             <SearchBar getSearchTerm={getSearchTerm} getPickerFilter={getPickerFilter} clearTerm={clearSearchTerm} />
             <View style={{height: 900}}>
-                {showBooks}
+                {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : showList}
             </View>
         </View>
     );
