@@ -12,6 +12,7 @@ export function ProductList ({navigation}){
 
     useEffect(()=>{
         loadProducts();
+        loadProductsLog();
     },[])
 
     async function loadProducts (){
@@ -19,6 +20,11 @@ export function ProductList ({navigation}){
         .then(res => res.json())
         .then(res => setProducts(convertData(res)))
         .catch(error => { console.log(error.message) });
+    }
+    async function loadProductsLog (){
+        await fetch(url)
+        .then(res => res.json())
+        .then(res => console.log(convertData(res)))
     }
 
     function convertData (data){

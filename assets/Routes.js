@@ -3,6 +3,7 @@ const Routes = {
     products: 'Lista de produtos',
     details: 'Detalhes Gerais',
     images: 'Images',
-    productGeral: 'Informações'
+    productGeral: 'Informações',
+    comments: 'Comentários',
 }
 export default Routes;
