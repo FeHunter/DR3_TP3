@@ -1,34 +1,34 @@
-import { View, Text, FlatList, ActivityIndicator , StyleSheet } from "react-native";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { View, FlatList, ActivityIndicator, StyleSheet } from "react-native";
 import { ProductCard } from "../components/Product/ProductCard";
 import { SearchBar } from "../components/Search/SearchBar";
 
-export function ProductList ({navigation}){
-
+export function ProductList({ navigation }) {
     const url = "https://t3t4-dfe-pb-grl-m1-default-rtdb.firebaseio.com/products.json";
 
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [pickerFilter, setpickerFilter] = useState('');
-
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
         loadProducts();
-    },[])
+    }, []);
 
-    async function loadProducts (){
+    async function loadProducts() {
         setIsLoading(true);
-        await fetch(url)
-        .then(res => res.json())
-        .then(res => {
-            setProducts(convertData(res));
-        })
-        .catch(error => { console.log(error.message)})
-        .finally(setIsLoading(false));
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            setProducts(convertData(data));
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
-    function convertData (data){
+    function convertData(data) {
         const ids = Object.keys(data);
         const objs = Object.values(data);
         return objs.map((item, i) => {
@@ -39,9 +39,11 @@ export function ProductList ({navigation}){
     function getSearchTerm(term) {
         setSearchTerm(term);
     }
+
     function clearSearchTerm() {
         setSearchTerm('');
     }
+
     function getPickerFilter(term) {
         setpickerFilter(term);
     }
@@ -51,8 +53,8 @@ export function ProductList ({navigation}){
         // Pesquisa por nome ou descrição
         updateList = updateList.filter((product) => {
             return (
-              product.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              product.descricao.toString().toLowerCase().includes(searchTerm.toLowerCase())
+                product.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                product.descricao.toString().toLowerCase().includes(searchTerm.toLowerCase())
             );
         });
         // Ordem conforme o picker selection
@@ -67,9 +69,10 @@ export function ProductList ({navigation}){
         }
         return (
             <FlatList
+                contentContainerStyle={styles.list}
                 data={updateList}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
                     return <ProductCard product={item} navigation={navigation} />;
                 }}
             />
@@ -79,20 +82,21 @@ export function ProductList ({navigation}){
     let showList =
         products.length > 0 && searchTerm.length === 0 && pickerFilter === "Sem Filtro" ? (
             <FlatList
+                contentContainerStyle={styles.list}
                 data={products}
                 keyExtractor={(item, index) => index.toString()}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
                     return <ProductCard product={item} navigation={navigation} />;
                 }}
             />
         ) : (
             filter()
-    );
+        );
 
     return (
         <View style={styles.container}>
             <SearchBar getSearchTerm={getSearchTerm} getPickerFilter={getPickerFilter} clearTerm={clearSearchTerm} />
-            <View style={{height: 900}}>
+            <View style={styles.listContainer}>
                 {isLoading ? <ActivityIndicator size="large" color="#0000ff" /> : showList}
             </View>
         </View>
@@ -101,9 +105,17 @@ export function ProductList ({navigation}){
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
-        height: '100%',
+        flex: 1,
         alignItems: 'center',
         paddingVertical: 25,
+    },
+    listContainer: {
+        flex: 1,
+        width: '100%',
+    },
+    list: {
+        width: '100%',
+        alignItems: 'center',
+        height: 500,
     },
 });
