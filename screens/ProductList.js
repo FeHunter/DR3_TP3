@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ProductCard } from "../components/Product/ProductCard";
 import { SearchBar } from "../components/Search/SearchBar";
 
-export function ProductList (){
+export function ProductList ({navigation}){
 
     const url = "https://t3t4-dfe-pb-grl-m1-default-rtdb.firebaseio.com/products.json";
 
@@ -49,7 +49,7 @@ export function ProductList (){
                 data={updateList}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item}) => {
-                    return <ProductCard product={item} />;
+                    return <ProductCard product={item} navigation={navigation} />;
                 }}
             />
         );
@@ -61,7 +61,7 @@ export function ProductList (){
                 data={products}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item}) => {
-                    return <ProductCard product={item} />;
+                    return <ProductCard product={item} navigation={navigation} />;
                 }}
             />
         ) : (

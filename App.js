@@ -1,9 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native';
+import Routes from './assets/Routes';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Routes from './assets/Routes';
-// Telas
+
+// Stack Screens
 import { ProductList } from './screens/ProductList';
+
+// Tab Screens
+import { ProductDetails } from './screens/ProductDatails';
 
 export default function App() {
 
@@ -14,6 +18,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName={Routes.products}>
           <Stack.Screen name={Routes.products} component={ProductList} />
+          <Stack.Screen name={Routes.details} component={ProductDetails} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>

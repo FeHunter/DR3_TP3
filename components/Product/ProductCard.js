@@ -1,9 +1,10 @@
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, Pressable} from 'react-native';
+import Routes from '../../assets/Routes';
 
-export function ProductCard ({product}){
+export function ProductCard ({product, navigation}){
 
     return (
-        <View style={styles.card}>
+        <Pressable style={styles.card} onPress={() => navigation.navigate(Routes.details, { product: product })}>
             <View style={styles.header}>
                 <Text style={styles.title}>{product.nome}</Text>
                 <Text>R${product.preco}</Text>
@@ -12,7 +13,7 @@ export function ProductCard ({product}){
                 <Image source={{uri: product.imagens[0]}} style={styles.imagem} />
                 <Text>{product.descricao}</Text>
             </View>
-        </View>
+        </Pressable>
     );
 }
 
