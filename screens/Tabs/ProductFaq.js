@@ -1,30 +1,33 @@
 import { View, Text, FlatList, StyleSheet } from 'react-native';
-import { ComentarioCard } from 'Product/ComentarioCard';
 import { useEffect } from 'react';
+import {Card} from '../../components/Product/ComentarioCard';
 
-export function ProductComentarios ({ route }) {
+export function ProdcutFaq ({ route }) {
     const { product } = route.params;
-    const comentarios = product.comentarios;
-    console.log(comentarios);
+    const duvidas = product.duvidas;
+    console.log(duvidas);
+
     return (
         <View style={styles.container}>
-            <Text>Comentários</Text>
+            <Text style={{textAlign: 'center', fontSize: 20, marginVertical: 10}}>Dúvidas</Text>
             <FlatList
-                style={{width: '100%', height: 800}}
-                data={comentarios}
+                data={duvidas}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item}) => {
                     return (
                         <View style={styles.card}>
                             <View style={styles.header}>
                                 <Text style={{fontSize: 18, fontWeight: 500}}>Usuário: {item.usuario}</Text>
-                                <Text style={{fontSize: 18, fontWeight: 500}}>Nota {item.nota}/5</Text>
                                 <Text style={{fontSize: 16, fontStyle: 'italic'}}>{ new Date(item.data).toLocaleDateString('pt-BR', { timeZone: 'UTC' }) }</Text>
                             </View>
                             <View style={styles.body}>
                                 <View>
-                                    <Text style={{fontStyle: 'italic', fontSize: 16, color: 'gray'}}>Comentário:</Text>
-                                    <Text style={styles.text}>{item.comentario}</Text>
+                                    <Text style={{fontStyle: 'italic', fontSize: 16, color: 'gray'}}>Pergunta:</Text>
+                                    <Text style={styles.text}>{item.pergunta}</Text>
+                                </View>
+                                <View>
+                                    <Text style={{fontStyle: 'italic', fontSize: 16, color: 'gray'}}>Resposta:</Text>
+                                    <Text style={styles.text}>{item.resposta}</Text>
                                 </View>
                             </View>
                         </View>

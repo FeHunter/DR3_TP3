@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, FlatList, ActivityIndicator, StyleSheet, Dimensions } from "react-native";
-import { ProductCard } from "../components/Product/ProductCard";
+import { ProductCard } from "Product/ProductCard";
 import { SearchBar } from "../components/Search/SearchBar";
 
 export function ProductList({ navigation }) {

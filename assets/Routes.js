@@ -5,5 +5,6 @@ const Routes = {
     images: 'Images',
     productGeral: 'Informações',
     comments: 'Comentários',
+    faq: 'Dúvidas'
 }
 export default Routes;
