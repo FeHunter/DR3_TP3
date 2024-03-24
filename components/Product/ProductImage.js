@@ -1,13 +1,17 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
 
 export function ProductImage({ route }) {
     const { product } = route.params;
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{product.nome}</Text>
-            <Image
-                source={{ uri: product.imagens[0] }} // Assuming the first image in 'imagens' array is the main image
-                style={styles.image}
+            <FlatList
+                style={{width: '100%', height: 800}}
+                data={product.imagens}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({item}) => {
+                    return <Image source={{ uri: item }} style={styles.image} />
+                }}
             />
         </View>
     );
@@ -25,8 +29,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     image: {
-        width: 200,
-        height: 200,
-        resizeMode: 'cover',
+        width: '100%',
+        height: 500,
+        resizeMode: 'contain',
     },
 });
