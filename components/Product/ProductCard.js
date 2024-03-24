@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         height: 350,
         justifyContent: 'space-between',
         borderBottomWidth: 2,
-        marginVertical: 15,
+        margin: 20,
     },
     header: {
         height: '20%',

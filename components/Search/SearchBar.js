@@ -23,14 +23,8 @@ export function SearchBar ({getSearchTerm, clearTerm, getPickerFilter}){
     return (
         <View style={styles.container}>
             <TextInput style={styles.input} placeholder='filtro' value={searchTerm} onChangeText={setSearchTerm} />
-            {searchTerm.length > 0 ? 
-                <Pressable onPress={()=>{clearTermFunc()}}>
-                    <Icon name='eraser' size={30} color={'black'} />
-                </Pressable>
-                :
-                null
-            }
             <Picker
+                style={styles.selecter}
                 selectedValue={selectFilter}
                 onValueChange={(value) => setSelectFilter(value)}
             >
@@ -40,6 +34,13 @@ export function SearchBar ({getSearchTerm, clearTerm, getPickerFilter}){
                 <Picker.Item label="Maior Preço" value="Maior Preço" />
                 <Picker.Item label="Menor Preço" value="Menor Preço" />
             </Picker>
+            {searchTerm.length > 0 ? 
+                <Pressable onPress={()=>{clearTermFunc()}}>
+                    <Icon name='eraser' size={30} color={'black'} />
+                </Pressable>
+                :
+                null
+            }
             <Pressable onPress={()=>{setTerm(searchTerm)}}>
                 <Icon name='search' size={30} color={'black'} />
             </Pressable>
@@ -50,7 +51,7 @@ export function SearchBar ({getSearchTerm, clearTerm, getPickerFilter}){
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: 50,
+        height: 40,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -58,8 +59,13 @@ const styles = StyleSheet.create({
     },
     input: {
         padding: 5,
-        width: '80%',
+        width: '50%',
+        height: '100%',
         borderWidth: 1,
         fontSize: 18,
-    }
+    },
+    selecter: {
+        width: 100,
+        height: '100%',
+    },
 });

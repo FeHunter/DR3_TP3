@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, FlatList, ActivityIndicator, StyleSheet } from "react-native";
+import { View, FlatList, ActivityIndicator, StyleSheet, Dimensions } from "react-native";
 import { ProductCard } from "../components/Product/ProductCard";
 import { SearchBar } from "../components/Search/SearchBar";
 
 export function ProductList({ navigation }) {
     const url = "https://t3t4-dfe-pb-grl-m1-default-rtdb.firebaseio.com/products.json";
+
+    const [orientation, setOrientation] = useState(false);
 
     const [products, setProducts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +15,17 @@ export function ProductList({ navigation }) {
 
     useEffect(() => {
         loadProducts();
+
+        // Orientação da tela
+        const updateOrientation = () => {
+            const { width, height } = Dimensions.get("window");
+            setOrientation(width > height ? true : false);
+        };
+        Dimensions.addEventListener("change", updateOrientation);
+        return () => {
+            Dimensions.removeEventListener("change", updateOrientation);
+        };
+
     }, []);
 
     async function loadProducts() {
@@ -75,6 +88,7 @@ export function ProductList({ navigation }) {
                 renderItem={({ item }) => {
                     return <ProductCard product={item} navigation={navigation} />;
                 }}
+                horizontal={orientation}
             />
         );
     }
@@ -88,6 +102,7 @@ export function ProductList({ navigation }) {
                 renderItem={({ item }) => {
                     return <ProductCard product={item} navigation={navigation} />;
                 }}
+                horizontal={orientation}
             />
         ) : (
             filter()
@@ -112,10 +127,15 @@ const styles = StyleSheet.create({
     listContainer: {
         flex: 1,
         width: '100%',
+        height: '100%'
     },
     list: {
         width: '100%',
+        justifyContent: 'center',
         alignItems: 'center',
-        height: 500,
+        height: 800,
+        overflow: 'scroll',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
     },
 });
